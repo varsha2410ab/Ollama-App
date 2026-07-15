@@ -177,9 +177,9 @@ Use only the following pieces of context to answer the question. Don't make up a
             
             # Iterate over stream chunks and dynamically update the UI
             for chunk in stream:
-            token = chunk['message']['content']
-            full_response += token
-            response_placeholder.markdown(full_response + "▌")
+                token = chunk['message']['content']
+                full_response += token
+                response_placeholder.markdown(full_response + "▌")
             
         # Final update to remove the cursor icon
         response_placeholder.markdown(full_response)
