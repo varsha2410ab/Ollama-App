@@ -14,17 +14,17 @@ LANGUAGE_MODEL = 'hf.co/bartowski/Llama-3.2-1B-Instruct-GGUF'
 @st.cache_resource
 def initialize_vector_db():
     """Loads the dataset and computes embeddings once, caching the results."""
-    dataset_path = 'cat-facts.txt'
+    dataset_path = 'food-facts.txt'
     
     # Check if file exists to prevent crashing
     if not os.path.exists(dataset_path):
         # Creating a fallback file for demonstration if it doesn't exist
         with open(dataset_path, 'w') as f:
-            f.write("Cats sleep for 12-16 hours a day to conserve energy.\n")
-            f.write("A group of cats is called a clowder.\n")
-            f.write("Cats use their whiskers to detect if they can fit through a space.\n")
-            f.write("Cats have over 20 muscles that control their ears.\n")
-            f.write("The first cat in space was a French cat named Félicette in 1963.\n")
+            f.write("Apples float in water because they are 25% air.\n")
+            f.write("Bananas are berries, but strawberries aren't.\n")
+            f.write("Honey never spoils.\n")
+            f.write("Carrots were originally purple, not orange.\n")
+            f.write("Peanuts aren't technically nuts; they are legumes.\n")
 
     with open(dataset_path, 'r',encoding="utf-8") as file:
         dataset = file.readlines()
@@ -94,7 +94,7 @@ with st.sidebar:
 
 
 # User Input
-input_query = st.text_input("Ask me a question about cats:", placeholder="e.g., How long do cats sleep?")
+input_query = st.text_input("Ask me a question about food:", placeholder="e.g., Do apples float?")
 
 if input_query:
     # Perform Retrieval

@@ -1,8 +1,8 @@
 import ollama
 
-## Importing the dataset - in this case, a simple text file with cat facts. Each line is a separate fact.
+## Importing the dataset - in this case, a simple text file with food facts. Each line is a separate fact.
 dataset = []
-with open('cat-facts.txt', 'r', encoding="utf-8") as file:
+with open('food-facts.txt', 'r', encoding="utf-8") as file:
   dataset = file.readlines()
   print(f'Loaded {len(dataset)} entries')
 
