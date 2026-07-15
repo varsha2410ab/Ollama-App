@@ -9,34 +9,42 @@ st.markdown("""
 <style>
     /* Main background */
     .stApp {
-        background-color: #fffaf0;
-        background-image: linear-gradient(135deg, #fffaf0 0%, #ffe4e1 100%);
-        font-family: 'Trebuchet MS', sans-serif;
+        background-color: #fff0f5;
+        background-image: linear-gradient(135deg, #fff0f5 0%, #ffe4e1 100%);
+        font-family: 'Nunito', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
     /* Headers */
     h1 {
-        color: #d35400 !important;
-        text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        color: #ff6b81 !important;
+        text-shadow: 2px 2px 0px #ffeaa7;
+        font-weight: 800 !important;
     }
     h2, h3, h4 {
-        color: #e67e22 !important;
+        color: #ff4757 !important;
     }
     /* Sidebar */
     [data-testid="stSidebar"] {
-        background-color: #ffebd1 !important;
-        border-right: 2px solid #f39c12;
+        background-color: #fff9c4 !important; /* cute butter yellow */
+        border-right: 3px dashed #ff9ff3;
     }
-    /* Input box */
-    .stTextInput > div > div > input {
-        border-radius: 12px;
-        border: 2px solid #e67e22;
+    /* Chat input container */
+    [data-testid="stChatInput"] {
+        border-radius: 30px !important;
+        border: 2px solid #ff9ff3 !important;
+        box-shadow: 0 4px 6px rgba(255, 159, 243, 0.2) !important;
     }
     /* Success / Info Alerts */
     [data-testid="stAlert"] {
-        border-radius: 12px;
-        background-color: #fdf5e6;
-        border-left: 5px solid #d35400;
-        color: #333;
+        border-radius: 15px;
+        background-color: #ffffff;
+        border: 2px solid #ff6b81;
+        box-shadow: 3px 3px 0px #ff6b81;
+        color: #2f3542;
+    }
+    /* Body text */
+    p {
+        color: #2f3542;
+        font-size: 1.05rem;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -132,7 +140,7 @@ with st.sidebar:
 
 
 # User Input
-input_query = st.text_input("Ask me a question about food:", placeholder="e.g., Do apples float?")
+input_query = st.chat_input("Ask me a question about food... e.g., Do apples float?")
 
 if input_query:
     # Perform Retrieval
@@ -145,29 +153,30 @@ if input_query:
             st.markdown("---")
 
     # Construct the instruction prompt
-    instruction_prompt = f"""You are a helpful chatbot.
+    instruction_prompt = f"""You are a helpful and enthusiastic culinary expert.
 Use only the following pieces of context to answer the question. Don't make up any new information:
 {'\n'.join([f' - {chunk}' for chunk, similarity in retrieved_knowledge])}
 """
 
-    st.subheader("Response:")
+    st.subheader(f"🧑‍🍳 Response to: *{input_query}*")
     
     # Dynamic placeholder for streaming the response
     response_placeholder = st.empty()
     full_response = ""
     
     try:
-        stream = ollama.chat(
-            model=LANGUAGE_MODEL,
-            messages=[
-                {'role': 'system', 'content': instruction_prompt},
-                {'role': 'user', 'content': input_query},
-            ],
-            stream=True,
-        )
-        
-        # Iterate over stream chunks and dynamically update the UI
-        for chunk in stream:
+        with st.spinner("Cooking up an answer..."):
+            stream = ollama.chat(
+                model=LANGUAGE_MODEL,
+                messages=[
+                    {'role': 'system', 'content': instruction_prompt},
+                    {'role': 'user', 'content': input_query},
+                ],
+                stream=True,
+            )
+            
+            # Iterate over stream chunks and dynamically update the UI
+            for chunk in stream:
             token = chunk['message']['content']
             full_response += token
             response_placeholder.markdown(full_response + "▌")
