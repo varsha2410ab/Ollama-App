@@ -2,9 +2,47 @@ import streamlit as st
 import ollama
 import os
 
-st.set_page_config(page_title="Ollama RAG Demo",layout="centered")
-st.title("Ollama Retrieval-Augmented Generation Demo")
-st.write("This is a simple demo of how to use Ollama for retrieval-augmented generation. The app will take a user query, retrieve relevant chunks of information from a vector database, and then use those chunks as context to generate a response from a language model.")
+st.set_page_config(page_title="Food Facts RAG", layout="centered", page_icon="🍔")
+
+# Inject Custom CSS for the Food Theme
+st.markdown("""
+<style>
+    /* Main background */
+    .stApp {
+        background-color: #fffaf0;
+        background-image: linear-gradient(135deg, #fffaf0 0%, #ffe4e1 100%);
+        font-family: 'Trebuchet MS', sans-serif;
+    }
+    /* Headers */
+    h1 {
+        color: #d35400 !important;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+    h2, h3, h4 {
+        color: #e67e22 !important;
+    }
+    /* Sidebar */
+    [data-testid="stSidebar"] {
+        background-color: #ffebd1 !important;
+        border-right: 2px solid #f39c12;
+    }
+    /* Input box */
+    .stTextInput > div > div > input {
+        border-radius: 12px;
+        border: 2px solid #e67e22;
+    }
+    /* Success / Info Alerts */
+    [data-testid="stAlert"] {
+        border-radius: 12px;
+        background-color: #fdf5e6;
+        border-left: 5px solid #d35400;
+        color: #333;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+st.title("🍔 Food Facts RAG Demo")
+st.write("Welcome to the **Food Facts** demo! Ask a question about food, and we'll retrieve relevant chunks of culinary knowledge to answer it for you! 🍕🌮🥗")
 
 # Model Configurations
 EMBEDDING_MODEL = 'hf.co/CompendiumLabs/bge-base-en-v1.5-gguf'
